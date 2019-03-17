@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour {
             create_Node_At_Tail = true;
 
             GameplayController.instance.IncreaseScore();
-            AudioManager.instance.Play_PickUpSound();
+            //AudioManager.instance.Play_PickUpSound();
         }
 
         if (target.tag == Tags.WALL || target.tag == Tags.BOMB) {

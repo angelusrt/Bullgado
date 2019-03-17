@@ -9,7 +9,7 @@ public class GameplayController : MonoBehaviour {
 
     public GameObject fruit_PickUp, bomb_PickUp;
 
-    private float min_X = -23f, max_X = 23f, min_Z = -25f, max_Z = 25f;
+    private float min_X = -15f, max_X = 15f, min_Z = -15f, max_Z = 15f;
     private float y_Pos = 1f;
      
 
@@ -55,8 +55,8 @@ public class GameplayController : MonoBehaviour {
         Invoke("StartSpawning", minTimeRange);
     }
 
-    public void IncreaseScore() {
-        scoreCount++;
-        score_Text.text = "Score:" + scoreCount;
-    }
+     public void IncreaseScore() {
+         //scoreCount++;
+         //score_Text.text = "Score:" + scoreCount;
+     }
 }
