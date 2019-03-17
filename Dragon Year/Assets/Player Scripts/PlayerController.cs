@@ -8,11 +8,11 @@ public class PlayerController : MonoBehaviour {
     public PlayerDirection direction;
 
     //[HideInInspector]
-    public float step_length = 0.2f;
+    public float step_length = 1f;
 
     //[HideInInspector]
     //Faz a cobra não andar continuamente 
-    public float movement_frequency = 0.1f;
+    public float movement_frequency = 0.5f;
 
     private float counter;
     private bool move;
@@ -76,52 +76,22 @@ public class PlayerController : MonoBehaviour {
         nodes.Add(tr.GetChild(2).GetComponent<Rigidbody>());
 
         head_Body = nodes[0];
-        //main_Body = nodes[1];
+        
 
     } 
     //Lista e pega os componentes do corpo
-
-    void SetDirectionRandom() {
-        //int dirRandom = Random.Range(0,(int)PlayerDirection.COUNT);
-        //direction = (PlayerDirection)dirRandom;
-    } 
-    //Comentado //Torna aleatorio a direção que o personagem vai entrar no jogo //Não preciso disso
-
-    void InitPlayer() {
-        //SetDirectionRandom();
-        //switch (direction)
-        //{
-        // case PlayerDirection.RIGHT:
-        // nodes[1].position = nodes[0].position - new Vector3(Metrics.NODE, 0f, 0f);
-        //        nodes[2].position = nodes[0].position - new Vector3(Metrics.NODE * 2f, 0f, 0f);
-        //        break;
-        //    case PlayerDirection.LEFT:
-        //        nodes[1].position = nodes[0].position + new Vector3(Metrics.NODE, 0f, 0f);
-        //        nodes[2].position = nodes[0].position + new Vector3(Metrics.NODE * 2f, 0f, 0f);
-        //        break;
-        //    case PlayerDirection.UP:
-        //        nodes[1].position = nodes[0].position - new Vector3(0f, Metrics.NODE, 0f);
-        //        nodes[2].position = nodes[0].position - new Vector3(0f, Metrics.NODE * 2f, 0f);
-        //        break;
-        //    case PlayerDirection.DOWN:
-        //        nodes[1].position = nodes[0].position + new Vector3(0f, Metrics.NODE, 0f);
-        //        nodes[2].position = nodes[0].position + new Vector3(0f, Metrics.NODE * 2f, 0f);
-        //        break;
-        //}
-    } 
-    //Comentado // Muda as partes do corpo de acordo com a direção dele dita pelo SetDirectionRandom() //Não preciso disso
-
     void Move() {
 
         
         Vector3 dPosition = delta_Position[(int)direction]; 
 
-        Vector3 parentPos = head_Body.position + dPosition;
+        Vector3 parentPos = head_Body.position;
         Vector3 prevPosition;
          
-        main_Body.position += head_Body.position + 2 * dPosition; //tem algo de errado aqui!
+        main_Body.position += dPosition; 
+        head_Body.position += dPosition; 
 
-        for (int i = 0; i < nodes.Count; i++){
+        for (int i = 1; i < nodes.Count; i++){
 
             prevPosition = nodes[i].position;
 
@@ -148,8 +118,6 @@ public class PlayerController : MonoBehaviour {
         }
 
     } 
-    //Permite andar no tempo e na frequência desejada // Não sei se preciso disso 
-
     public void SetInputDirection(PlayerDirection dir) {
 
         if (dir == PlayerDirection.UP && direction == PlayerDirection.DOWN || dir == PlayerDirection.DOWN && direction == PlayerDirection.UP ||
@@ -160,15 +128,11 @@ public class PlayerController : MonoBehaviour {
         direction = dir;
         ForceMove();
     } 
-    //Comentado //Não preciso disso
-
     void ForceMove() {
         counter = 0;
          move = false;
          Move();
     } 
-    //Comentado //Não preciso disso
-
     void OnTriggerEnter(Collider target) {
         if (target.tag == Tags.FRUIT) {
             target.gameObject.SetActive(false);
