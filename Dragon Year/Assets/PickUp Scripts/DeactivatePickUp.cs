@@ -6,7 +6,7 @@ public class DeactivatePickUp : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Invoke("Deactivate", Random.Range(1f, 9f)); 
+        Invoke("Deactivate", 6f); 
 	}
 	
 	// Update is called once per frame

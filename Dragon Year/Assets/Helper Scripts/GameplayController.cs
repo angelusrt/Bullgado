@@ -9,11 +9,11 @@ public class GameplayController : MonoBehaviour {
 
     public GameObject fruit_PickUp, bomb_PickUp;
 
-    private float min_X = -15f, max_X = 15f, min_Z = -15f, max_Z = 15f;
+    private float min_X = -10f, max_X = 10f, min_Z = -10f, max_Z = 10f;
     private float y_Pos = 1f;
      
 
-    public float minTimeRange = 1f;
+    public float minTimeRange = 0f;
     public float maxTimeRange = 2f;
     public int minRange = 0;
     public int maxRange = 10;
@@ -28,7 +28,7 @@ public class GameplayController : MonoBehaviour {
     void Start() {
         //score_Text = GameObject.Find("Score").GetComponent<Text>();
 
-        Invoke("StartSpawning", minTimeRange);
+        Invoke("StartSpawning", 0.5f);
     }
 	// Update is called once per frame
 	void MakeInstace () {

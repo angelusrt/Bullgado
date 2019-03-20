@@ -35,7 +35,8 @@ public class PlayerController : MonoBehaviour {
     //Ao comer uma fruta é necessario criar um bloco de calda? Sim.
     private bool create_Node_At_Tail;
 
-
+    private int xMax = 10;
+    private int zMax = 10;
     
     void Awake () {
         tr = transform;
@@ -104,6 +105,34 @@ public class PlayerController : MonoBehaviour {
             newNode.transform.SetParent(transform, true);
             nodes.Add(newNode.GetComponent<Rigidbody>());
 
+        }
+        // if(tr.position.x >= xMax){
+        //     tr.position = new Vector3(-xMax,1,tr.position.z);
+        // }
+        // else if(tr.position.x <= -xMax){
+        //     tr.position = new Vector3(xMax,1,tr.position.z);
+        // }
+        // else if(tr.position.z >= zMax){
+        //     tr.position = new Vector3(tr.position.x,1,-zMax);
+        // }
+        // else if(tr.position.z <= -zMax){
+        //     tr.position = new Vector3(tr.position.x,1,zMax);
+        // }
+         if(head_Body.position.x >= xMax){
+            head_Body.position = new Vector3(-xMax,1,head_Body.position.z);
+            tr.position = head_Body.position;
+        }
+        else if(head_Body.position.x <= -xMax){
+            head_Body.position = new Vector3(xMax,1,head_Body.position.z);
+            tr.position = head_Body.position;
+        }
+        else if(head_Body.position.z >= zMax){
+            head_Body.position = new Vector3(head_Body.position.x,1,-zMax);
+            tr.position = head_Body.position;
+        }
+        else if(head_Body.position.z <= -zMax){
+            head_Body.position = new Vector3(head_Body.position.x,1,zMax);
+            tr.position = head_Body.position;
         }
     }  
     //Checa se é necessario criar um bloco de corpo, por ter comido uma fruta
