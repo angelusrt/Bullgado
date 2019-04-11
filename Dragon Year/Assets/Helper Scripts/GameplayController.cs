@@ -7,30 +7,34 @@ public class GameplayController : MonoBehaviour {
 
     public static GameplayController instance;
 
-    public GameObject fruit_PickUp, bomb_PickUp;
+    public GameObject fruit_PickUp, bomb_PickUp, fruitb_PickUp;
 
-    private float min_X = -10f, max_X = 10f, min_Z = -10f, max_Z = 10f;
-    private float y_Pos = 1f;
+    private int min_X = -10, max_X = 10, min_Z = -10, max_Z = 10;
+    private int y_Pos = 1;
      
+    private List<Rigidbody> Pick_Ups;
 
-    public float minTimeRange = 0f;
-    public float maxTimeRange = 2f;
-    public int minRange = 0;
-    public int maxRange = 10;
-
+     GameObject gameO;
     private Text score_Text;
     private int scoreCount;
 
 	// Use this for initialization
 	void Awake () {
+        Pick_Ups = new List<Rigidbody>();
+        Pick_Ups.Add(transform.GetChild(0).GetComponent<Rigidbody>());
+        Pick_Ups.Add(transform.GetChild(1).GetComponent<Rigidbody>());
+
+
+
         MakeInstace();
 	}   
     void Start() {
-        //score_Text = GameObject.Find("Score").GetComponent<Text>();
+        score_Text = GameObject.Find("Score").GetComponent<Text>();
 
-        Invoke("StartSpawning", 0.5f);
+        Invoke("StartSpawning", 1/2);
     }
 	// Update is called once per frame
+
 	void MakeInstace () {
         if (instance == null) {
             instance = this;
@@ -44,19 +48,28 @@ public class GameplayController : MonoBehaviour {
 
     }
     IEnumerator SpawPickUps() {
-        yield return new WaitForSeconds(Random.Range(minTimeRange, maxTimeRange));
+        yield return new WaitForSeconds(Random.Range(1, 2));
 
-        if (Random.Range(minRange, maxRange) >= 2){
-            Instantiate(fruit_PickUp, new Vector3(Random.Range(min_X, max_X), y_Pos, Random.Range(min_Z, max_Z)), Quaternion.identity);
+        if (Random.Range(0, 10) >= 2){
+            GameObject newPickFruit = Instantiate(fruit_PickUp, new Vector3(Random.Range(min_X, max_X), y_Pos, Random.Range(min_Z, max_Z)), Quaternion.identity);
+            newPickFruit.transform.SetParent(transform, true);
+            Pick_Ups.Add(newPickFruit.GetComponent<Rigidbody>());
         }
-        else {
-            Instantiate(bomb_PickUp, new Vector3(Random.Range(min_X, max_X), y_Pos, Random.Range(min_Z, max_Z)), Quaternion.identity);
+        if(Random.Range(0,200) >= 190){
+            GameObject newPickBlueFruit = Instantiate(fruitb_PickUp, new Vector3(Random.Range(min_X, max_X), y_Pos, Random.Range(min_Z, max_Z)), Quaternion.identity);
+            newPickBlueFruit.transform.SetParent(transform, true);
+            Pick_Ups.Add(newPickBlueFruit.GetComponent<Rigidbody>());
         }
-        Invoke("StartSpawning", minTimeRange);
+        if(Random.Range(0,50) <= 10){
+            GameObject newPickBomb = Instantiate(bomb_PickUp, new Vector3(Random.Range(min_X, max_X), y_Pos, Random.Range(min_Z, max_Z)), Quaternion.identity);
+            newPickBomb.transform.SetParent(transform, true);
+            Pick_Ups.Add(newPickBomb.GetComponent<Rigidbody>());
+        }
+        Invoke("StartSpawning", 0f);
     }
 
      public void IncreaseScore() {
-         //scoreCount++;
-         //score_Text.text = "Score:" + scoreCount;
+         scoreCount++;
+         score_Text.text = "Score: " + scoreCount;
      }
 }

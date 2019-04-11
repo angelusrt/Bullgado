@@ -50,10 +50,10 @@ public class PlayerInput : MonoBehaviour {
             playerController.SetInputDirection((horizontal == 1) ? PlayerDirection.RIGHT : PlayerDirection.LEFT);
         }
     }
-    int GetAxisRaw(Axis axis){
+    public int GetAxisRaw(Axis axis){
         if(axis == Axis.Horizontal){
-            bool left = Input.GetKeyDown(KeyCode.LeftArrow);
-            bool right = Input.GetKeyDown(KeyCode.RightArrow);
+            bool left = Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A);
+            bool right = Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D);
 
             if(left){ return -1; }
             if(right){ return 1; }
@@ -61,8 +61,8 @@ public class PlayerInput : MonoBehaviour {
             return 0;
         }
         else if(axis == Axis.Vertical){
-            bool up = Input.GetKeyDown(KeyCode.UpArrow);
-            bool down = Input.GetKeyDown(KeyCode.DownArrow);
+            bool up = Input.GetKeyDown(KeyCode.UpArrow) ||Input.GetKeyDown(KeyCode.W);
+            bool down = Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S);
 
             if(up){ return 1; }
             if(down){ return -1; }

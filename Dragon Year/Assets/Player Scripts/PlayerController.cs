@@ -17,9 +17,17 @@ public class PlayerController : MonoBehaviour {
     private float counter;
     private bool move;
 
+    private float speed = 8f;
+    private float spawnShot;
+    private float cadence = 0f;
+
     [SerializeField]
-    // Codigo para a calda (como corpos separados) = util para qunado tiver mais de uma entidade (tipo varios ratos) 
     private GameObject tailPrefab;
+    [SerializeField]
+    private GameObject tailBPrefab;
+
+    [SerializeField]
+    private GameObject ShotPrefab;
 
     private List<Vector3> delta_Position;
 
@@ -34,9 +42,13 @@ public class PlayerController : MonoBehaviour {
 
     //Ao comer uma fruta é necessario criar um bloco de calda? Sim.
     private bool create_Node_At_Tail;
+    private bool create_Nodeb_At_Tail;
+    private bool Destroy_Tail;
 
     private int xMax = 10;
     private int zMax = 10;
+
+    private int CountBlueTails;
     
     void Awake () {
         tr = transform;
@@ -58,6 +70,8 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
         CheckMovementFrequency();
+        SpawnOfShots();
+        //Debug.Log(CountBlueTails);
     } 
     //Checa o CheckMovementFrequency()
 
@@ -106,6 +120,13 @@ public class PlayerController : MonoBehaviour {
             nodes.Add(newNode.GetComponent<Rigidbody>());
 
         }
+        if (create_Nodeb_At_Tail) {
+            create_Nodeb_At_Tail = false;
+            GameObject newNode = Instantiate(tailBPrefab, nodes[nodes.Count - 1].position, Quaternion.identity);
+            newNode.transform.SetParent(transform, true);
+            nodes.Add(newNode.GetComponent<Rigidbody>());
+            CountBlueTails++;
+        }
         // if(tr.position.x >= xMax){
         //     tr.position = new Vector3(-xMax,1,tr.position.z);
         // }
@@ -136,7 +157,23 @@ public class PlayerController : MonoBehaviour {
         }
     }  
     //Checa se é necessario criar um bloco de corpo, por ter comido uma fruta
-
+    void DestroyUntillCheckpoint(){
+        if(CountBlueTails == 0){
+            Time.timeScale = 0f;
+            AudioManager.instance.Play_DeadSound();
+        }
+        if(CountBlueTails > 0){
+            //Destroy(newNo);
+            CountBlueTails--;
+            if(Destroy_Tail == true){
+                nodes[nodes.Count - 1].gameObject.SetActive(false);
+                nodes.Remove(nodes[nodes.Count - 1]);
+                //Destroy(nodes[nodes.Count - 1].gameObject);
+                Destroy_Tail = false;
+            }
+            //if(){Destroy_Tail = false;}
+        }
+    }
     void CheckMovementFrequency() {
         counter += Time.deltaTime;
         if(counter >= movement_frequency) {
@@ -164,16 +201,32 @@ public class PlayerController : MonoBehaviour {
     } 
     void OnTriggerEnter(Collider target) {
         if (target.tag == Tags.FRUIT) {
-            target.gameObject.SetActive(false);
+            //target.gameObject.SetActive(false);
+            Destroy(target.gameObject);
             create_Node_At_Tail = true;
 
             GameplayController.instance.IncreaseScore();
             //AudioManager.instance.Play_PickUpSound();
         }
+        if (target.tag == Tags.BLUEFRUIT){
+            Destroy(target.gameObject);
+            create_Nodeb_At_Tail = true;
+
+            GameplayController.instance.IncreaseScore();
+        }
 
         if (target.tag == Tags.WALL || target.tag == Tags.BOMB) {
-            Time.timeScale = 0f;
-            AudioManager.instance.Play_DeadSound();
+            Destroy_Tail = true;
+            DestroyUntillCheckpoint();        
+        }
+    }
+    void SpawnOfShots()
+    {
+        if(Input.GetKeyDown(KeyCode.F)){
+            if(Time.time > spawnShot){
+                spawnShot = cadence + Time.time;
+                Instantiate(ShotPrefab, transform.position, Quaternion.identity);   
+            }
         }
     }
 }
