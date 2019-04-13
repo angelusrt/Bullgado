@@ -16,6 +16,22 @@ public class Metrics {
     //Metrica que dita o movimento do jogo
     public static float NODE = 1.2f;
 }
+public class Tile{
+    public enum Type{Empty,Full}
+    Type type;
+    public int x{get; private set;}
+    public int y{get; private set;}
+    public int z{get; private set;}
+
+    public Tile(int x,int y, int z){
+
+        this.x = x;
+        this.y = y;
+        this.z = z;
+
+        type = Type.Full;
+    }
+}
 
 public enum PlayerDirection {
     //Nome dado as direções

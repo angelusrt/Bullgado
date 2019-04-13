@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour {
     private bool create_Node_At_Tail;
     private bool create_Nodeb_At_Tail;
     private bool Destroy_Tail;
-    private int xMax = 10;
-    private int zMax = 10;
+    private int xMax = 11;
+    private int zMax = 11;
 
 
     private List<Vector3> delta_Position;
