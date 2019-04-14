@@ -114,34 +114,51 @@ public class PlayerController : MonoBehaviour {
 
             BluePosition.Add(nodes.Count - 1);
         }
-        // if(tr.position.x >= xMax){
-        //     tr.position = new Vector3(-xMax,1,tr.position.z);
-        // }
-        // else if(tr.position.x <= -xMax){
-        //     tr.position = new Vector3(xMax,1,tr.position.z);
-        // }
-        // else if(tr.position.z >= zMax){
-        //     tr.position = new Vector3(tr.position.x,1,-zMax);
-        // }
-        // else if(tr.position.z <= -zMax){
-        //     tr.position = new Vector3(tr.position.x,1,zMax);
-        // }
-         if(head_Body.position.x >= xMax){
-            head_Body.position = new Vector3(-xMax,1,head_Body.position.z);
-            tr.position = head_Body.position;
+        if(tr.position.x >= xMax){
+            for (int i = 0; i <= nodes.Count - 1; i++)
+            { 
+                nodes[0].position = new Vector3(-xMax + 1,1,nodes[0].position.z);
+                nodes[i].position = nodes[0].position;
+                tr.position = nodes[0].position;
+            }
         }
-        else if(head_Body.position.x <= -xMax){
-            head_Body.position = new Vector3(xMax,1,head_Body.position.z);
-            tr.position = head_Body.position;
+        if (tr.position.x <= -xMax){
+            for (int i = 0; i <= nodes.Count - 1; i++)
+            { 
+                nodes[0].position = new Vector3(xMax - 1,1,nodes[0].position.z);
+                nodes[i].position = nodes[0].position;
+                tr.position = nodes[0].position;
+            }
         }
-        else if(head_Body.position.z >= zMax){
-            head_Body.position = new Vector3(head_Body.position.x,1,-zMax);
-            tr.position = head_Body.position;
+        if (tr.position.z >= zMax){
+            for (int i = 0; i <= nodes.Count - 1; i++)
+            { 
+                nodes[0].position = new Vector3(nodes[0].position.x,1,-zMax + 1);
+                nodes[i].position = nodes[0].position;
+                tr.position = nodes[0].position;
+            }
         }
-        else if(head_Body.position.z <= -zMax){
-            head_Body.position = new Vector3(head_Body.position.x,1,zMax);
-            tr.position = head_Body.position;
+        if (tr.position.z <= -zMax){
+            for (int i = 0; i <= nodes.Count - 1; i++)
+            { 
+                nodes[0].position = new Vector3(nodes[0].position.x,1,zMax - 1);
+                nodes[i].position = nodes[0].position;
+                tr.position = nodes[0].position;
+            }
         }
+        /*if(tr.position.x >= xMax){tr.position = new Vector3(-xMax + 1,1,nodes[].position.z);}
+         else if(tr.position.x <= -xMax){tr.position = new Vector3(xMax - 1,1,tr.position.z);}
+         else if(tr.position.z >= zMax){tr.position = new Vector3(tr.position.x,1,-zMax + 1);}
+         else if(tr.position.z <= -zMax){tr.position = new Vector3(tr.position.x,1,zMax - 1);}*/
+
+        /*if(head_Body.position.x >= xMax){head_Body.position = new Vector3(-xMax,1,head_Body.position.z);
+                                                tr.position = head_Body.position;}
+        else if(head_Body.position.x <= -xMax){head_Body.position = new Vector3(xMax,1,head_Body.position.z);
+                                                tr.position = head_Body.position;}
+        else if(head_Body.position.z >= zMax){head_Body.position = new Vector3(head_Body.position.x,1,-zMax);
+                                                tr.position = head_Body.position;}
+        else if(head_Body.position.z <= -zMax){head_Body.position = new Vector3(head_Body.position.x,1,zMax);
+                                                tr.position = head_Body.position;}*/
     }  
     //Checa se é necessario criar um bloco de corpo, por ter comido uma fruta
     void DestroyUntillCheckpoint(){

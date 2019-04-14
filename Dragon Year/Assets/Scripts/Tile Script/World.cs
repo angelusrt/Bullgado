@@ -24,23 +24,30 @@ public class World : MonoBehaviour {
 		int xPos = (int)transform.position.x;
 		int zPos = (int)transform.position.z;
 
-		for (int i = xPos - Chunk.size; i < xPos + (2*Chunk.size); i+= Chunk.size)
+		for (int i = xPos - Chunk.size; i <= xPos + (Chunk.size); i+= Chunk.size)
 		{
-			for (int j = zPos - Chunk.size; j < zPos + (2*Chunk.size); j+= Chunk.size)
+			for (int j = zPos - Chunk.size; j <= zPos + (Chunk.size); j+= Chunk.size)
 			{
 				MakeChunkAt(i,j);
 			}
 		}
-
 	}
 	void MakeChunkAt(int x, int z){
 
-		x = Mathf.FloorToInt(x / (float)Chunk.size) * Chunk.size;
-		z = Mathf.FloorToInt(z / (float)Chunk.size) * Chunk.size;
+		x = Mathf.FloorToInt(x / (float)Chunk.size) * Chunk.size; // -21, 0 , 21
+		z = Mathf.FloorToInt(z / (float)Chunk.size) * Chunk.size; 
 
-		if(chunkMap.ContainsKey(new Vector3(x,0,z)) == false){
+		/* if(chunkMap.ContainsKey(new Vector3(x,0,z)) == false){
+
 			GameObject go = Instantiate(chunkGO, new Vector3(x,0,z),Quaternion.identity);
-			chunkMap.Add(new Vector3(x, 0, z),go.GetComponent<Chunk>());
+			chunkMap.Add(new Vector3(x, 0, z) , go.GetComponent<Chunk>());
+		}*/
+		if(chunkMap.ContainsKey(new Vector3(x,0,z)) == false){
+
+			GameObject go = Instantiate(chunkGO) as GameObject;
+			go.transform.SetParent(transform, true);
+			chunkMap.Add(new Vector3(x, 0, z) , go.GetComponent<Chunk>());
+			go.transform.position = new Vector3(x,0,z);
 		}
 	}
 	void DeleteChunks(){
