@@ -9,7 +9,9 @@ public class Tags : MonoBehaviour {
     public static string BOMB = "Bomb";
     public static string TAIL = "Tail";
     public static string BLUEFRUIT = "BlueFruit";
-
+    public static string REDFRUIT = "RedFruit";
+    public static string BOX = "Box";
+    public static string BOXLOCATION = "BoxLocation";
 }
 
 public class Metrics {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public static PlayerController instance;
+    //private ShootBehavior shootBehavior;
     public PlayerDirection direction;
 
 
@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     private bool create_Node_At_Tail;
     private bool create_Nodeb_At_Tail;
     private bool Destroy_Tail;
+    private int redFruitCount;
     private int xMax = 11;
     private int zMax = 11;
 
@@ -40,12 +41,10 @@ public class PlayerController : MonoBehaviour {
     
     void Awake () {
         tr = transform;
-
-        //Permite atrelar a calda
         main_Body = GetComponent<Rigidbody>();
 
         InitSnakeNodes();
-        //InitPlayer();
+
         BluePosition = new List<int>();
         delta_Position = new List<Vector3>() { 
             new Vector3(0f, 0f,-step_length),     // -z Left
@@ -70,30 +69,46 @@ public class PlayerController : MonoBehaviour {
     } 
     //Roda o Move()
      void InitSnakeNodes() {
-
         nodes = new List<Rigidbody>();
         nodes.Add(tr.GetChild(0).GetComponent<Rigidbody>());
         nodes.Add(tr.GetChild(1).GetComponent<Rigidbody>());
         nodes.Add(tr.GetChild(2).GetComponent<Rigidbody>());
 
         head_Body = nodes[0];
-        
-
     } 
-    //Lista e pega os componentes do corpo
-    void Move() {
+    void CheckMovementFrequency() {
+        counter += Time.deltaTime;
 
-        
+        if(counter >= movement_frequency) {
+            counter = 0f;
+            move = true;
+        }
+    } 
+    public void SetInputDirection(PlayerDirection dir) {
+
+        if (dir == PlayerDirection.UP && direction == PlayerDirection.DOWN || dir == PlayerDirection.DOWN && direction == PlayerDirection.UP ||
+           dir == PlayerDirection.RIGHT && direction == PlayerDirection.LEFT || dir == PlayerDirection.LEFT && direction == PlayerDirection.RIGHT) {
+
+            return;
+        }
+        direction = dir;
+        ForceMove();
+    } 
+    void ForceMove() {
+        counter = 0;
+        move = false;
+        Move();
+    } 
+    void Move() {
         Vector3 dPosition = delta_Position[(int)direction]; 
 
         Vector3 parentPos = head_Body.position;
         Vector3 prevPosition;
          
-        main_Body.position += dPosition; 
-        head_Body.position += dPosition; 
+        main_Body.position += dPosition;
+        head_Body.position += dPosition;
 
         for (int i = 1; i < nodes.Count; i++){
-
             prevPosition = nodes[i].position;
 
             nodes[i].position = parentPos;
@@ -104,21 +119,20 @@ public class PlayerController : MonoBehaviour {
             GameObject newNode = Instantiate(tailPrefab, nodes[nodes.Count - 1].position, Quaternion.identity);
             newNode.transform.SetParent(transform, true);
             nodes.Add(newNode.GetComponent<Rigidbody>());
-
         }
         if (create_Nodeb_At_Tail) {
             create_Nodeb_At_Tail = false;
             GameObject newNode = Instantiate(tailBPrefab, nodes[nodes.Count - 1].position, Quaternion.identity);
             newNode.transform.SetParent(transform, true);
             nodes.Add(newNode.GetComponent<Rigidbody>());
-
+            
             BluePosition.Add(nodes.Count - 1);
         }
         if(tr.position.x >= xMax){
             for (int i = 0; i <= nodes.Count - 1; i++)
             { 
                 nodes[0].position = new Vector3(-xMax + 1,1,nodes[0].position.z);
-                nodes[i].position = nodes[0].position;
+                nodes[i].position = nodes[0].position + new Vector3(-1,0,0);
                 tr.position = nodes[0].position;
             }
         }
@@ -126,7 +140,7 @@ public class PlayerController : MonoBehaviour {
             for (int i = 0; i <= nodes.Count - 1; i++)
             { 
                 nodes[0].position = new Vector3(xMax - 1,1,nodes[0].position.z);
-                nodes[i].position = nodes[0].position;
+                nodes[i].position = nodes[0].position + new Vector3(1,0,0);
                 tr.position = nodes[0].position;
             }
         }
@@ -134,7 +148,7 @@ public class PlayerController : MonoBehaviour {
             for (int i = 0; i <= nodes.Count - 1; i++)
             { 
                 nodes[0].position = new Vector3(nodes[0].position.x,1,-zMax + 1);
-                nodes[i].position = nodes[0].position;
+                nodes[i].position = nodes[0].position + new Vector3(0,0,-1);
                 tr.position = nodes[0].position;
             }
         }
@@ -142,25 +156,40 @@ public class PlayerController : MonoBehaviour {
             for (int i = 0; i <= nodes.Count - 1; i++)
             { 
                 nodes[0].position = new Vector3(nodes[0].position.x,1,zMax - 1);
-                nodes[i].position = nodes[0].position;
+                nodes[i].position = nodes[0].position + new Vector3(0,0,1);
                 tr.position = nodes[0].position;
             }
         }
-        /*if(tr.position.x >= xMax){tr.position = new Vector3(-xMax + 1,1,nodes[].position.z);}
-         else if(tr.position.x <= -xMax){tr.position = new Vector3(xMax - 1,1,tr.position.z);}
-         else if(tr.position.z >= zMax){tr.position = new Vector3(tr.position.x,1,-zMax + 1);}
-         else if(tr.position.z <= -zMax){tr.position = new Vector3(tr.position.x,1,zMax - 1);}*/
-
-        /*if(head_Body.position.x >= xMax){head_Body.position = new Vector3(-xMax,1,head_Body.position.z);
-                                                tr.position = head_Body.position;}
-        else if(head_Body.position.x <= -xMax){head_Body.position = new Vector3(xMax,1,head_Body.position.z);
-                                                tr.position = head_Body.position;}
-        else if(head_Body.position.z >= zMax){head_Body.position = new Vector3(head_Body.position.x,1,-zMax);
-                                                tr.position = head_Body.position;}
-        else if(head_Body.position.z <= -zMax){head_Body.position = new Vector3(head_Body.position.x,1,zMax);
-                                                tr.position = head_Body.position;}*/
     }  
     //Checa se é necessario criar um bloco de corpo, por ter comido uma fruta
+    void OnTriggerEnter(Collider target) {
+        if (target.tag == Tags.FRUIT) {
+            //target.gameObject.SetActive(false);
+            Destroy(target.gameObject);
+            create_Node_At_Tail = true;
+
+            GameplayController.instance.IncreaseScore();
+            //AudioManager.instance.Play_PickUpSound();
+        }
+        if (target.tag == Tags.BLUEFRUIT){
+            Destroy(target.gameObject);
+            create_Nodeb_At_Tail = true;
+
+            GameplayController.instance.IncreaseScore();
+            //AudioManager.instance.Play_PickUpSound();
+        }
+        if (target.tag == Tags.REDFRUIT){
+            Destroy(target.gameObject);
+            redFruitCount++;
+            GameplayController.instance.IncreaseScore();
+            //AudioManager.instance.Play_PickUpSound();
+        }
+
+        if (target.tag == Tags.WALL || target.tag == Tags.BOMB || target.tag == Tags.TAIL || target.tag == Tags.BOX ) {
+            Destroy_Tail = true;
+            DestroyUntillCheckpoint();        
+        }
+    }
     void DestroyUntillCheckpoint(){
         if(BluePosition.Count == 0){
             Time.timeScale = 0f;
@@ -182,59 +211,16 @@ public class PlayerController : MonoBehaviour {
             }
         }
     }
-    void CheckMovementFrequency() {
-        counter += Time.deltaTime;
-        if(counter >= movement_frequency) {
-
-            counter = 0f;
-            move = true;
-
-        }
-
-    } 
-    public void SetInputDirection(PlayerDirection dir) {
-
-        if (dir == PlayerDirection.UP && direction == PlayerDirection.DOWN || dir == PlayerDirection.DOWN && direction == PlayerDirection.UP ||
-           dir == PlayerDirection.RIGHT && direction == PlayerDirection.LEFT || dir == PlayerDirection.LEFT && direction == PlayerDirection.RIGHT) {
-
-            return;
-        }
-        direction = dir;
-        ForceMove();
-    } 
-    void ForceMove() {
-        counter = 0;
-         move = false;
-         Move();
-    } 
-    void OnTriggerEnter(Collider target) {
-        if (target.tag == Tags.FRUIT) {
-            //target.gameObject.SetActive(false);
-            Destroy(target.gameObject);
-            create_Node_At_Tail = true;
-
-            GameplayController.instance.IncreaseScore();
-            //AudioManager.instance.Play_PickUpSound();
-        }
-        if (target.tag == Tags.BLUEFRUIT){
-            Destroy(target.gameObject);
-            create_Nodeb_At_Tail = true;
-
-            GameplayController.instance.IncreaseScore();
-            //AudioManager.instance.Play_PickUpSound();
-        }
-
-        if (target.tag == Tags.WALL || target.tag == Tags.BOMB) {
-            Destroy_Tail = true;
-            DestroyUntillCheckpoint();        
-        }
-    }
     void SpawnOfShots()
     {
         if(Input.GetKeyDown(KeyCode.F)){
+            if(redFruitCount > 0){
             if(Time.time > spawnShot){
+                //shootBehavior.direct = (int)direction;
                 spawnShot = cadence + Time.time;
-                Instantiate(ShotPrefab, transform.position, Quaternion.identity);   
+                Instantiate(ShotPrefab, transform.position, Quaternion.identity);  
+            }
+            redFruitCount--;
             }
         }
     }

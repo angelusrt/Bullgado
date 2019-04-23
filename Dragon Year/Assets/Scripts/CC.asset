@@ -25,7 +25,7 @@ MonoBehaviour:
         motionVectorsResolution: 8
         motionVectorsAmplitude: 0
   fog:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       excludeSkybox: 1
   antialiasing:
@@ -54,8 +54,8 @@ MonoBehaviour:
     m_Settings:
       reflection:
         blendType: 0
-        reflectionQuality: 2
-        maxDistance: 100
+        reflectionQuality: 0
+        maxDistance: 300
         iterationCount: 256
         stepSize: 3
         widthModifier: 0.5
@@ -71,15 +71,15 @@ MonoBehaviour:
   depthOfField:
     m_Enabled: 1
     m_Settings:
-      focusDistance: 9
-      aperture: 0.5
-      focalLength: 35
-      useCameraFov: 0
-      kernelSize: 1
+      focusDistance: 12
+      aperture: 2.2
+      focalLength: 45
+      useCameraFov: 1
+      kernelSize: 0
   motionBlur:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
-      shutterAngle: 73
+      shutterAngle: 100
       sampleCount: 10
       frameBlending: 0
   eyeAdaptation:

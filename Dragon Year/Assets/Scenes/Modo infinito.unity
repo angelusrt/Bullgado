@@ -189,13 +189,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 54398955}
-  m_LocalRotation: {x: 0.09998884, y: -0.63728845, z: 0.08390059, w: 0.7594909}
-  m_LocalPosition: {x: 45, y: 15, z: -3}
+  m_LocalRotation: {x: 0.19082147, y: -0.65257, z: 0.17485563, w: 0.7121553}
+  m_LocalPosition: {x: 23, y: 18, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 15, y: -80, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: -85, z: 0}
 --- !u!114 &54398960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +209,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 843710963}
   smoothSpeed: 0.05
-  offset: {x: 20, y: 9, z: 0}
+  smoothRotateSpeed: 0.5
+  offset: {x: 20, y: 12, z: -1}
 --- !u!114 &54398961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5105,6 +5106,11 @@ MonoBehaviour:
     type: 2}
   fruitb_PickUp: {fileID: 1040114192399236, guid: 72c8574a563ae6a418ed9e4ecaae7e3b,
     type: 2}
+  fruitr_PickUp: {fileID: 1343984248944252, guid: 116df84844fe9d146bead6a04a86c7d4,
+    type: 2}
+  box_PickUp: {fileID: 1728152501932840, guid: b32a717f3767d904a9bdada04c74bbaf, type: 2}
+  boxl_PickUp: {fileID: 1371074056274158, guid: 56b74d3d82f89764ab17dfda2d5e9793,
+    type: 2}
 --- !u!4 &939291045
 Transform:
   m_ObjectHideFlags: 0
@@ -5440,6 +5446,20 @@ Prefab:
     - target: {fileID: 1071163201424892, guid: 85b87b8218ab2af44aa05a31b4c3279d, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114148550135881772, guid: 85b87b8218ab2af44aa05a31b4c3279d,
+        type: 2}
+      propertyPath: movement_frequency
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1480354676246004, guid: 85b87b8218ab2af44aa05a31b4c3279d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114434858636147908, guid: 85b87b8218ab2af44aa05a31b4c3279d,
+        type: 2}
+      propertyPath: isCountPossible
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 199456392536023702, guid: 85b87b8218ab2af44aa05a31b4c3279d, type: 2}

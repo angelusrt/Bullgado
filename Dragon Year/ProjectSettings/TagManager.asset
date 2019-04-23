@@ -9,6 +9,7 @@ TagManager:
   - Fruit
   - Wall
   - BlueFruit
+  - RedFruit
   layers:
   - Default
   - TransparentFX
