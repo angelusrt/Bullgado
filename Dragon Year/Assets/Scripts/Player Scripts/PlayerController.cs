@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
-
     //private ShootBehavior shootBehavior;
     public PlayerDirection direction;
-
 
     [SerializeField]
     private GameObject tailPrefab;
@@ -15,6 +14,9 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private GameObject ShotPrefab;
+
+    [SerializeField]
+    private GameObject FloatingTextPrefab;
 
 
     public float step_length = 1f;
@@ -29,20 +31,23 @@ public class PlayerController : MonoBehaviour {
     private int redFruitCount;
     private int xMax = 11;
     private int zMax = 11;
+    private int scoreCount;
 
 
     private List<Vector3> delta_Position;
-    private List<Rigidbody> nodes;
+    public List<Rigidbody> nodes;
     private List<int> BluePosition;
     private Rigidbody main_Body;
     private Rigidbody head_Body;
     private Transform tr;
+    private TextMesh score_Text;
 
     
     void Awake () {
         tr = transform;
         main_Body = GetComponent<Rigidbody>();
 
+        score_Text = GameObject.Find("Score").GetComponent<TextMesh>();
         InitSnakeNodes();
 
         BluePosition = new List<int>();
@@ -168,20 +173,20 @@ public class PlayerController : MonoBehaviour {
             Destroy(target.gameObject);
             create_Node_At_Tail = true;
 
-            GameplayController.instance.IncreaseScore();
+            IncreaseScore();
             //AudioManager.instance.Play_PickUpSound();
         }
         if (target.tag == Tags.BLUEFRUIT){
             Destroy(target.gameObject);
             create_Nodeb_At_Tail = true;
 
-            GameplayController.instance.IncreaseScore();
+            IncreaseScore();
             //AudioManager.instance.Play_PickUpSound();
         }
         if (target.tag == Tags.REDFRUIT){
             Destroy(target.gameObject);
             redFruitCount++;
-            GameplayController.instance.IncreaseScore();
+            IncreaseScore();
             //AudioManager.instance.Play_PickUpSound();
         }
 
@@ -218,10 +223,15 @@ public class PlayerController : MonoBehaviour {
             if(Time.time > spawnShot){
                 //shootBehavior.direct = (int)direction;
                 spawnShot = cadence + Time.time;
-                Instantiate(ShotPrefab, transform.position, Quaternion.identity);  
+                Instantiate(ShotPrefab, transform.position, transform.rotation);  
             }
             redFruitCount--;
             }
         }
     }
+    public void IncreaseScore() {
+    	scoreCount++;
+        score_Text.text = "Score: " + scoreCount;
+    }
 }
+

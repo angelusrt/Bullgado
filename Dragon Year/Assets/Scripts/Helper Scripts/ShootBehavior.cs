@@ -36,7 +36,7 @@ public class ShootBehavior : MonoBehaviour
     // Update is called once per frame
     public void FixedUpdate()
     {
-        transform.Translate(delta_Position[0] * speed * Time.deltaTime);
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
         if(transform.position.z > 10f ||transform.position.z < -10f  ||transform.position.x > 10f  ||transform.position.x < -10f ){
             Destroy(this.gameObject);
         }
