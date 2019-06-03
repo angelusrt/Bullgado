@@ -19,6 +19,8 @@ public class SubmarineBehaviour : MonoBehaviour {
 	float progress = 0;
 	float progress2 = 0;
 	int lifeCount= 3;
+	int trashCollected;
+	int trashCollectedTotal;
 	bool turnItBigger;
 	bool bounce = false;
 	bool softFall = false;
@@ -155,6 +157,20 @@ public class SubmarineBehaviour : MonoBehaviour {
 			life3.transform.localScale = new Vector2(0.015f,0.015f);
 			waitForSecs = 0;
 			turnItBigger = true;
+		}
+	}
+	void OnTriggerEnter2D(Collider2D col){
+		if(col.gameObject.tag == "Trash"){
+			trashCollected ++;
+			trashCollectedTotal++;
+			if(trashCollected <= 3){
+				trashCollected ++;
+				trashCollectedTotal++;
+				Destroy(col.gameObject);
+			}
+		}
+		if(col.gameObject.tag == "TrashHole"){
+			trashCollected = 0;
 		}
 	}
 }

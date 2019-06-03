@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -121,16 +122,16 @@ MonoBehaviour:
         neutralWhiteClip: 10
       basic:
         postExposure: 0
-        temperature: 10
+        temperature: 0
         tint: 0
         hueShift: 0
         saturation: 1
         contrast: 1
       channelMixer:
-        red: {x: 1.2, y: 0, z: 0}
+        red: {x: 1, y: 0, z: 0}
         green: {x: 0, y: 0.9, z: 0}
         blue: {x: 0, y: 0, z: 0.9}
-        currentEditingChannel: 2
+        currentEditingChannel: 0
       colorWheels:
         mode: 0
         log:
